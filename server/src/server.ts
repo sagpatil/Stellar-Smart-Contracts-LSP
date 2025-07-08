@@ -473,6 +473,300 @@ connection.onCompletion(
         insertText: 'panic!("${1:message}")',
         insertTextFormat: 2,
         documentation: 'Panic with a message'
+      },
+      
+      // OpenZeppelin Access Control attributes
+      {
+        label: '#[only_admin]',
+        kind: CompletionItemKind.Snippet,
+        data: 21,
+        insertText: '#[only_admin]',
+        documentation: 'OpenZeppelin: Restrict function to admin only'
+      },
+      {
+        label: '#[only_owner]',
+        kind: CompletionItemKind.Snippet,
+        data: 22,
+        insertText: '#[only_owner]',
+        documentation: 'OpenZeppelin: Restrict function to owner only'
+      },
+      {
+        label: '#[only_role(${1:caller}, "${2:role}")]',
+        kind: CompletionItemKind.Snippet,
+        data: 23,
+        insertText: '#[only_role(${1:caller}, "${2:role}")]',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Restrict function to specific role'
+      },
+      {
+        label: '#[has_role(${1:caller}, "${2:role}")]',
+        kind: CompletionItemKind.Snippet,
+        data: 24,
+        insertText: '#[has_role(${1:caller}, "${2:role}")]',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Check if caller has role (requires manual auth)'
+      },
+      {
+        label: '#[has_any_role(${1:caller}, [${2:roles}])]',
+        kind: CompletionItemKind.Snippet,
+        data: 25,
+        insertText: '#[has_any_role(${1:caller}, ["${2:role1}", "${3:role2}"])]',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Check if caller has any of the specified roles'
+      },
+      {
+        label: '#[only_any_role(${1:caller}, [${2:roles}])]',
+        kind: CompletionItemKind.Snippet,
+        data: 26,
+        insertText: '#[only_any_role(${1:caller}, ["${2:role1}", "${3:role2}"])]',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Restrict function to any of the specified roles'
+      },
+      
+      // OpenZeppelin Pausable attributes
+      {
+        label: '#[when_not_paused]',
+        kind: CompletionItemKind.Snippet,
+        data: 27,
+        insertText: '#[when_not_paused]',
+        documentation: 'OpenZeppelin: Function can only be called when contract is not paused'
+      },
+      {
+        label: '#[when_paused]',
+        kind: CompletionItemKind.Snippet,
+        data: 28,
+        insertText: '#[when_paused]',
+        documentation: 'OpenZeppelin: Function can only be called when contract is paused'
+      },
+      
+      // OpenZeppelin imports
+      {
+        label: 'use stellar_access_control::{self as access_control, AccessControl};',
+        kind: CompletionItemKind.Snippet,
+        data: 29,
+        insertText: 'use stellar_access_control::{self as access_control, AccessControl};',
+        documentation: 'OpenZeppelin: Import access control module'
+      },
+      {
+        label: 'use stellar_access_control_macros::{has_role, only_admin, only_role};',
+        kind: CompletionItemKind.Snippet,
+        data: 30,
+        insertText: 'use stellar_access_control_macros::{has_role, only_admin, only_role};',
+        documentation: 'OpenZeppelin: Import access control macros'
+      },
+      {
+        label: 'use stellar_ownable::{set_owner, Ownable};',
+        kind: CompletionItemKind.Snippet,
+        data: 31,
+        insertText: 'use stellar_ownable::{set_owner, Ownable};',
+        documentation: 'OpenZeppelin: Import ownable module'
+      },
+      {
+        label: 'use stellar_ownable_macro::only_owner;',
+        kind: CompletionItemKind.Snippet,
+        data: 32,
+        insertText: 'use stellar_ownable_macro::only_owner;',
+        documentation: 'OpenZeppelin: Import ownable macro'
+      },
+      {
+        label: 'use stellar_pausable::{self as pausable, Pausable};',
+        kind: CompletionItemKind.Snippet,
+        data: 33,
+        insertText: 'use stellar_pausable::{self as pausable, Pausable};',
+        documentation: 'OpenZeppelin: Import pausable module'
+      },
+      {
+        label: 'use stellar_pausable_macros::{when_not_paused, when_paused};',
+        kind: CompletionItemKind.Snippet,
+        data: 34,
+        insertText: 'use stellar_pausable_macros::{when_not_paused, when_paused};',
+        documentation: 'OpenZeppelin: Import pausable macros'
+      },
+      {
+        label: 'use stellar_fungible::{Base, FungibleToken};',
+        kind: CompletionItemKind.Snippet,
+        data: 35,
+        insertText: 'use stellar_fungible::{Base, FungibleToken};',
+        documentation: 'OpenZeppelin: Import fungible token module'
+      },
+      {
+        label: 'use stellar_fungible::allowlist::{AllowList, FungibleAllowList};',
+        kind: CompletionItemKind.Snippet,
+        data: 36,
+        insertText: 'use stellar_fungible::allowlist::{AllowList, FungibleAllowList};',
+        documentation: 'OpenZeppelin: Import allowlist extension'
+      },
+      {
+        label: 'use stellar_fungible::blocklist::{BlockList, FungibleBlockList};',
+        kind: CompletionItemKind.Snippet,
+        data: 37,
+        insertText: 'use stellar_fungible::blocklist::{BlockList, FungibleBlockList};',
+        documentation: 'OpenZeppelin: Import blocklist extension'
+      },
+      {
+        label: 'use stellar_fungible::burnable::FungibleBurnable;',
+        kind: CompletionItemKind.Snippet,
+        data: 38,
+        insertText: 'use stellar_fungible::burnable::FungibleBurnable;',
+        documentation: 'OpenZeppelin: Import burnable extension'
+      },
+      {
+        label: 'use stellar_non_fungible::{Base, NonFungibleToken};',
+        kind: CompletionItemKind.Snippet,
+        data: 39,
+        insertText: 'use stellar_non_fungible::{Base, NonFungibleToken};',
+        documentation: 'OpenZeppelin: Import non-fungible token module'
+      },
+      {
+        label: 'use stellar_non_fungible::burnable::NonFungibleBurnable;',
+        kind: CompletionItemKind.Snippet,
+        data: 40,
+        insertText: 'use stellar_non_fungible::burnable::NonFungibleBurnable;',
+        documentation: 'OpenZeppelin: Import NFT burnable extension'
+      },
+      {
+        label: 'use stellar_default_impl_macro::default_impl;',
+        kind: CompletionItemKind.Snippet,
+        data: 41,
+        insertText: 'use stellar_default_impl_macro::default_impl;',
+        documentation: 'OpenZeppelin: Import default implementation macro'
+      },
+      
+      // OpenZeppelin functions
+      {
+        label: 'access_control::set_admin(e, &admin);',
+        kind: CompletionItemKind.Snippet,
+        data: 42,
+        insertText: 'access_control::set_admin(e, &${1:admin});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Set contract admin'
+      },
+      {
+        label: 'access_control::grant_role_no_auth(e, &admin, &user, &role);',
+        kind: CompletionItemKind.Snippet,
+        data: 43,
+        insertText: 'access_control::grant_role_no_auth(e, &${1:admin}, &${2:user}, &${3:role});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Grant role without auth (use in constructor)'
+      },
+      {
+        label: 'set_owner(e, &owner);',
+        kind: CompletionItemKind.Snippet,
+        data: 44,
+        insertText: 'set_owner(e, &${1:owner});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Set contract owner'
+      },
+      {
+        label: 'pausable::pause(e);',
+        kind: CompletionItemKind.Snippet,
+        data: 45,
+        insertText: 'pausable::pause(e);',
+        documentation: 'OpenZeppelin: Pause the contract'
+      },
+      {
+        label: 'pausable::unpause(e);',
+        kind: CompletionItemKind.Snippet,
+        data: 46,
+        insertText: 'pausable::unpause(e);',
+        documentation: 'OpenZeppelin: Unpause the contract'
+      },
+      {
+        label: 'pausable::paused(e)',
+        kind: CompletionItemKind.Snippet,
+        data: 47,
+        insertText: 'pausable::paused(e)',
+        documentation: 'OpenZeppelin: Check if contract is paused'
+      },
+      {
+        label: 'Base::mint(e, &to, amount);',
+        kind: CompletionItemKind.Snippet,
+        data: 48,
+        insertText: 'Base::mint(e, &${1:to}, ${2:amount});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Mint tokens'
+      },
+      {
+        label: 'Base::burn(e, &from, amount);',
+        kind: CompletionItemKind.Snippet,
+        data: 49,
+        insertText: 'Base::burn(e, &${1:from}, ${2:amount});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Burn tokens'
+      },
+      {
+        label: 'Base::transfer(e, &from, &to, amount);',
+        kind: CompletionItemKind.Snippet,
+        data: 50,
+        insertText: 'Base::transfer(e, &${1:from}, &${2:to}, ${3:amount});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Transfer tokens'
+      },
+      {
+        label: 'AllowList::allow_user(e, &user);',
+        kind: CompletionItemKind.Snippet,
+        data: 51,
+        insertText: 'AllowList::allow_user(e, &${1:user});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Allow user in allowlist'
+      },
+      {
+        label: 'AllowList::disallow_user(e, &user);',
+        kind: CompletionItemKind.Snippet,
+        data: 52,
+        insertText: 'AllowList::disallow_user(e, &${1:user});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Disallow user in allowlist'
+      },
+      {
+        label: 'BlockList::block_user(e, &user);',
+        kind: CompletionItemKind.Snippet,
+        data: 53,
+        insertText: 'BlockList::block_user(e, &${1:user});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Block user in blocklist'
+      },
+      {
+        label: 'BlockList::unblock_user(e, &user);',
+        kind: CompletionItemKind.Snippet,
+        data: 54,
+        insertText: 'BlockList::unblock_user(e, &${1:user});',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Unblock user in blocklist'
+      },
+      
+      // OpenZeppelin trait implementations
+      {
+        label: '#[default_impl]\n#[contractimpl]\nimpl AccessControl for Contract {}',
+        kind: CompletionItemKind.Snippet,
+        data: 55,
+        insertText: '#[default_impl]\n#[contractimpl]\nimpl AccessControl for ${1:Contract} {}',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Default AccessControl implementation'
+      },
+      {
+        label: '#[default_impl]\n#[contractimpl]\nimpl Ownable for Contract {}',
+        kind: CompletionItemKind.Snippet,
+        data: 56,
+        insertText: '#[default_impl]\n#[contractimpl]\nimpl Ownable for ${1:Contract} {}',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Default Ownable implementation'
+      },
+      {
+        label: '#[default_impl]\n#[contractimpl]\nimpl FungibleToken for Contract {}',
+        kind: CompletionItemKind.Snippet,
+        data: 57,
+        insertText: '#[default_impl]\n#[contractimpl]\nimpl FungibleToken for ${1:Contract} {\n    type ContractType = ${2:Base};\n}',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Default FungibleToken implementation'
+      },
+      {
+        label: '#[default_impl]\n#[contractimpl]\nimpl FungibleBurnable for Contract {}',
+        kind: CompletionItemKind.Snippet,
+        data: 58,
+        insertText: '#[default_impl]\n#[contractimpl]\nimpl FungibleBurnable for ${1:Contract} {}',
+        insertTextFormat: 2,
+        documentation: 'OpenZeppelin: Default FungibleBurnable implementation'
       }
     ];
 
@@ -704,89 +998,278 @@ pub enum DataKey {
 }
 
 #[contracttype]
-pub struct TokenInfo {
-    pub name: Symbol,
-    pub symbol: Symbol,
+pub struct MyData {
+    pub value: u32,
 }
 \`\`\`
 
 ### Requirements:
-- Applied to structs and enums used in contract storage
-- Makes types serializable for contract storage`,
+- Applied to enums and structs used in contract storage
+- Enables serialization for storage`,
 
-    'contractmeta': `## #[contractmeta]
-Attribute to add metadata to a Stellar contract.
+    // OpenZeppelin Access Control
+    'only_admin': `## #[only_admin] - OpenZeppelin
+Restricts function access to the contract admin only.
 
 ### Usage:
 \`\`\`rust
-#[contractmeta(
-    key = "Description",
-    val = "Token contract for payments"
-)]
+#[only_admin]
+pub fn admin_function(env: &Env) {
+    // Only admin can call this
+}
 \`\`\`
 
-### Purpose:
-- Adds descriptive metadata to contracts
-- Useful for documentation and contract identification`,
+### Requirements:
+- Contract must implement AccessControl trait
+- Admin must be set during initialization`,
 
-    'storage': `## Contract Storage
-Stellar contracts have three types of storage:
+    'only_owner': `## #[only_owner] - OpenZeppelin
+Restricts function access to the contract owner only.
 
-### Instance Storage
-- \`env.storage().instance()\`
-- Lifetime: Contract instance
-- Use for: Contract configuration, admin settings
+### Usage:
+\`\`\`rust
+#[only_owner]
+pub fn owner_function(env: &Env) {
+    // Only owner can call this
+}
+\`\`\`
 
-### Persistent Storage
-- \`env.storage().persistent()\`
-- Lifetime: Survives contract updates
-- Use for: User data, balances, permanent state
+### Requirements:
+- Contract must implement Ownable trait
+- Owner must be set during initialization`,
 
-### Temporary Storage
-- \`env.storage().temporary()\`
-- Lifetime: Current transaction
-- Use for: Temporary calculations, caching`,
+    'only_role': `## #[only_role] - OpenZeppelin
+Restricts function access to accounts with a specific role.
+
+### Usage:
+\`\`\`rust
+#[only_role(caller, "minter")]
+pub fn mint(env: &Env, caller: Address, to: Address, amount: i128) {
+    // Only accounts with "minter" role can call this
+}
+\`\`\`
+
+### Features:
+- Automatic authorization check
+- Role-based access control
+- Hierarchical role system support`,
+
+    'has_role': `## #[has_role] - OpenZeppelin
+Checks if caller has a specific role (requires manual auth).
+
+### Usage:
+\`\`\`rust
+#[has_role(caller, "manager")]
+pub fn manage(env: &Env, caller: Address) {
+    caller.require_auth(); // Manual auth required
+    // Function implementation
+}
+\`\`\`
+
+### Features:
+- Role validation without automatic auth
+- More flexible than only_role
+- Supports complex authorization logic`,
+
+    'when_not_paused': `## #[when_not_paused] - OpenZeppelin
+Restricts function to execute only when contract is not paused.
+
+### Usage:
+\`\`\`rust
+#[when_not_paused]
+pub fn normal_operation(env: &Env) {
+    // Only works when contract is not paused
+}
+\`\`\`
+
+### Features:
+- Emergency stop mechanism
+- Automatic pause state checking
+- Used for regular operations`,
+
+    'when_paused': `## #[when_paused] - OpenZeppelin
+Restricts function to execute only when contract is paused.
+
+### Usage:
+\`\`\`rust
+#[when_paused]
+pub fn emergency_function(env: &Env) {
+    // Only works when contract is paused
+}
+\`\`\`
+
+### Features:
+- Emergency operations during pause
+- Automatic pause state checking
+- Used for emergency functions`,
+
+    'AccessControl': `## AccessControl - OpenZeppelin
+Trait providing role-based access control functionality.
+
+### Key Features:
+- Hierarchical role system
+- Admin role management
+- Role enumeration
+- Secure admin transfers
+
+### Common Functions:
+- \`grant_role(account, role)\`
+- \`revoke_role(account, role)\`
+- \`has_role(account, role)\`
+- \`set_role_admin(role, admin_role)\`
+
+### Usage:
+Implement with \`#[default_impl]\` for basic functionality.`,
+
+    'Ownable': `## Ownable - OpenZeppelin
+Trait providing single-owner access control.
+
+### Key Features:
+- Single owner model
+- Ownership transfer (2-step process)
+- Ownership renunciation
+- Simple authorization
+
+### Common Functions:
+- \`get_owner()\`
+- \`transfer_ownership(new_owner)\`
+- \`accept_ownership()\`
+- \`renounce_ownership()\`
+
+### Usage:
+Simpler alternative to AccessControl for single-owner contracts.`,
+
+    'Pausable': `## Pausable - OpenZeppelin
+Trait providing emergency stop functionality.
+
+### Key Features:
+- Contract-wide pause mechanism
+- Emergency stop capability
+- State-dependent function execution
+- Owner-controlled pause/unpause
+
+### Common Functions:
+- \`paused()\` - Check pause state
+- \`pause()\` - Pause the contract
+- \`unpause()\` - Unpause the contract
+
+### Usage:
+Use with \`#[when_not_paused]\` and \`#[when_paused]\` macros.`,
+
+    'FungibleToken': `## FungibleToken - OpenZeppelin
+Trait for SEP-41 compliant fungible tokens.
+
+### Key Features:
+- Standard token interface
+- Transfer and approval system
+- Balance tracking
+- Metadata support
+
+### Common Functions:
+- \`transfer(from, to, amount)\`
+- \`approve(owner, spender, amount)\`
+- \`balance(account)\`
+- \`total_supply()\`
+
+### Extensions:
+- AllowList - Control who can receive tokens
+- BlockList - Block specific accounts
+- Burnable - Add burn functionality`,
+
+    'AllowList': `## AllowList - OpenZeppelin
+Extension for fungible tokens to control transfers via allowlist.
+
+### Key Features:
+- Whitelist mechanism
+- Transfer restrictions
+- Admin-controlled access
+- Override standard transfers
+
+### Common Functions:
+- \`allow_user(user)\` - Add to allowlist
+- \`disallow_user(user)\` - Remove from allowlist
+- \`allowed(account)\` - Check allowlist status
+
+### Usage:
+Only allowed accounts can send/receive tokens.`,
+
+    'BlockList': `## BlockList - OpenZeppelin
+Extension for fungible tokens to block specific accounts.
+
+### Key Features:
+- Blacklist mechanism
+- Transfer restrictions
+- Admin-controlled blocking
+- Override standard transfers
+
+### Common Functions:
+- \`block_user(user)\` - Add to blocklist
+- \`unblock_user(user)\` - Remove from blocklist
+- \`blocked(account)\` - Check blocked status
+
+### Usage:
+Blocked accounts cannot send/receive tokens.`,
 
     'require_auth': `## require_auth()
-Require authentication for an address.
+Stellar function to require authentication for an address.
 
 ### Usage:
 \`\`\`rust
-pub fn transfer(env: Env, from: Address, to: Address, amount: i128) {
-    from.require_auth();
-    // ... transfer logic
+pub fn protected_function(env: Env, caller: Address) {
+    caller.require_auth();
+    // Function implementation
 }
 \`\`\`
 
-### Purpose:
-- Ensures the address holder has authorized the transaction
-- Must be called for state-changing operations involving the address`,
+### Features:
+- Verifies the caller has signed the transaction
+- Essential for security in state-changing functions
+- Should be called early in functions that modify state`,
 
-    'ledger': `## Ledger Information
-Access current ledger information through \`env.ledger()\`.
-
-### Common Methods:
-- \`env.ledger().timestamp()\` - Current ledger close time
-- \`env.ledger().sequence()\` - Current ledger sequence number
-- \`env.ledger().network_id()\` - Network identifier
-
-### Usage:
-Used for time-based logic, sequence tracking, and network identification.`,
-
-    'panic': `## panic!
-Panic with a message, terminating contract execution.
+    'panic_with_error': `## panic_with_error!
+Macro to panic with a custom error code.
 
 ### Usage:
 \`\`\`rust
-if amount <= 0 {
-    panic!("Amount must be positive");
+if condition_failed {
+    panic_with_error!(env, MyError::InvalidInput);
 }
 \`\`\`
 
-### Behavior:
-- Terminates contract execution
-- Reverts all state changes
-- Returns error to caller`
+### Features:
+- Better error reporting than plain panic
+- Allows custom error types
+- Provides structured error handling`,
+
+    'symbol_short': `## symbol_short!
+Macro to create a short symbol (up to 14 characters).
+
+### Usage:
+\`\`\`rust
+let role = symbol_short!("minter");
+let key = symbol_short!("balance");
+\`\`\`
+
+### Features:
+- Efficient string representation
+- Compile-time validation
+- Used for keys, roles, and identifiers`,
+
+    'default_impl': `## #[default_impl] - OpenZeppelin
+Macro to provide default trait implementations.
+
+### Usage:
+\`\`\`rust
+#[default_impl]
+#[contractimpl]
+impl AccessControl for MyContract {}
+\`\`\`
+
+### Features:
+- Reduces boilerplate code
+- Provides standard implementations
+- Can be combined with custom implementations
+- Used with OpenZeppelin traits`
   };
 
   return stellarDocs[word] || null;

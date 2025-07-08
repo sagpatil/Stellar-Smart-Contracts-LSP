@@ -1,9 +1,4 @@
-use soroban_sdk::{contract, contractimpl, contracttype, contractmeta, Env, Address, Map, Symbol, Vec};
-
-#[contractmeta(
-    key = "Description",
-    val = "Token contract for Stellar network"
-)]
+use soroban_sdk::{contract, contractimpl, contracttype, Env, Address, Symbol};
 
 #[contract]
 pub struct TokenContract;

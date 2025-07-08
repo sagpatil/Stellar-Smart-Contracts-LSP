@@ -3,3 +3,7 @@ dist
 node_modules
 .vscode-test/
 *.vsix
+
+# Rust/Cargo build artifacts
+test-contracts/target/
+test-contracts/Cargo.lock

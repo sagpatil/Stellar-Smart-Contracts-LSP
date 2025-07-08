@@ -1,4 +1,4 @@
-use soroban_sdk::{contract, contractimpl, contracttype, Env, Address, Map, Symbol, Vec, Bytes};
+use soroban_sdk::{contract, contractimpl, contracttype, Env, Address, Symbol, Bytes};
 
 #[contract]
 pub struct VotingContract;
