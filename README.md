@@ -32,10 +32,38 @@ This extension contributes the following settings:
 - `stellar.lsp.enable`: Enable/disable the Stellar LSP server (default: `true`)
 - `stellar.lsp.trace.server`: Control LSP server communication tracing (`off`, `messages`, `verbose`)
 - `stellar.diagnostics.enable`: Enable/disable diagnostic reporting (default: `true`)
+- `stellar.cli.path`: Path to the Stellar CLI executable (default: `stellar`)
+- `stellar.build.target`: Build target for contracts (default: `wasm32-unknown-unknown`)
+- `stellar.network.rpc`: RPC URL for Stellar network
+- `stellar.network.passphrase`: Network passphrase for Stellar network
 
 ## Commands
 
 - `Stellar: Restart LSP Server`: Restart the language server if it becomes unresponsive
+- `Stellar: Build Stellar Contract`: Build the current Stellar contract using Stellar CLI
+- `Stellar: Test Stellar Contract`: Run tests for the current Stellar contract
+- `Stellar: Deploy Stellar Contract`: Deploy the contract to the Stellar network
+- `Stellar: Invoke Stellar Contract Function`: Invoke a function on a deployed contract
+- `Stellar: Generate TypeScript Types`: Generate TypeScript bindings for the contract
+
+## Stellar CLI Integration
+
+This extension integrates with the Stellar CLI to provide seamless development experience:
+
+- **Build**: Compile contracts to WASM with `stellar contract build`
+- **Test**: Run contract tests with `stellar contract test`
+- **Deploy**: Deploy contracts to Stellar networks
+- **Invoke**: Call contract functions from VS Code
+- **Generate Types**: Create TypeScript bindings for frontend integration
+
+### CLI Configuration
+
+Configure the Stellar CLI integration through VS Code settings:
+
+- `stellar.cli.path`: Path to the Stellar CLI executable (default: `stellar`)
+- `stellar.build.target`: Build target for contracts (default: `wasm32-unknown-unknown`)
+- `stellar.network.rpc`: RPC URL for Stellar network
+- `stellar.network.passphrase`: Network passphrase for Stellar network
 
 ## Development
 
@@ -66,8 +94,23 @@ To set up the development environment:
 Initial release of Stellar Smart Contracts LSP:
 - Basic syntax highlighting for Stellar constructs
 - Code completion for Stellar types and attributes
-- Simple diagnostic validation
-- Hover information for common Stellar types
+- Enhanced diagnostic validation with comprehensive error checking
+- Hover information for common Stellar types and functions
+- Stellar CLI integration for build, test, deploy, and invoke operations
+- TypeScript bindings generation support
+- Comprehensive code completions including storage methods and environment functions
+- Advanced contract validation and best practices suggestions
+
+### Enhanced Features in v0.0.1
+- **Extended Completions**: 20+ intelligent code completions for Stellar SDK
+- **Advanced Diagnostics**: Comprehensive validation including:
+  - Missing attribute detection
+  - Authentication requirement checks
+  - Storage usage validation
+  - Best practices suggestions
+- **CLI Integration**: Full Stellar CLI integration with VS Code commands
+- **Rich Hover Information**: Detailed documentation for all Stellar types and functions
+- **Test Contracts**: Example contracts for testing and development
 
 ## Contributing
 

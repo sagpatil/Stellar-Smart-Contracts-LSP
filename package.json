@@ -35,6 +35,31 @@
         "command": "stellar-contracts-lsp.restart",
         "title": "Restart Stellar LSP Server",
         "category": "Stellar"
+      },
+      {
+        "command": "stellar-contracts-lsp.build",
+        "title": "Build Stellar Contract",
+        "category": "Stellar"
+      },
+      {
+        "command": "stellar-contracts-lsp.test",
+        "title": "Test Stellar Contract",
+        "category": "Stellar"
+      },
+      {
+        "command": "stellar-contracts-lsp.deploy",
+        "title": "Deploy Stellar Contract",
+        "category": "Stellar"
+      },
+      {
+        "command": "stellar-contracts-lsp.invoke",
+        "title": "Invoke Stellar Contract Function",
+        "category": "Stellar"
+      },
+      {
+        "command": "stellar-contracts-lsp.generateTypes",
+        "title": "Generate TypeScript Types",
+        "category": "Stellar"
       }
     ],
     "configuration": {
@@ -56,6 +81,27 @@
           "type": "boolean",
           "default": true,
           "description": "Enable/disable diagnostic reporting"
+        },
+        "stellar.cli.path": {
+          "type": "string",
+          "default": "stellar",
+          "description": "Path to the Stellar CLI executable"
+        },
+        "stellar.build.target": {
+          "type": "string",
+          "enum": ["wasm32-unknown-unknown", "wasm32-wasi"],
+          "default": "wasm32-unknown-unknown",
+          "description": "Target for building Stellar contracts"
+        },
+        "stellar.network.rpc": {
+          "type": "string",
+          "default": "https://soroban-testnet.stellar.org",
+          "description": "RPC URL for Stellar network"
+        },
+        "stellar.network.passphrase": {
+          "type": "string",
+          "default": "Test SDF Network ; September 2015",
+          "description": "Network passphrase for Stellar network"
         }
       }
     }
