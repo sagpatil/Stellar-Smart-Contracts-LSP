@@ -8,6 +8,23 @@
     "type": "git",
     "url": "https://github.com/stellar/stellar-contracts-lsp.git"
   },
+  "homepage": "https://github.com/stellar/stellar-contracts-lsp",
+  "bugs": {
+    "url": "https://github.com/stellar/stellar-contracts-lsp/issues"
+  },
+  "keywords": [
+    "stellar",
+    "smart contracts",
+    "blockchain",
+    "rust",
+    "lsp",
+    "language server",
+    "soroban"
+  ],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.101.0"
   },
