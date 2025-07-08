@@ -1,0 +1,104 @@
+{
+  "name": "Rust",
+  "scopeName": "source.rust",
+  "fileTypes": [
+    "rs"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#stellar_keywords"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#types"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.rust",
+          "match": "//.*"
+        },
+        {
+          "name": "comment.block.rust",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.rust",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.rust",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.rust",
+          "match": "\\b(if|else|for|while|loop|match|return|break|continue|impl|trait|struct|enum|fn|let|mut|const|static|pub|use|mod|extern|crate|self|super|where|as|in|move|ref|unsafe|async|await)\\b"
+        }
+      ]
+    },
+    "stellar_keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.stellar",
+          "match": "\\b(contract|contractimpl|contracttype|contractmeta|symbol|#\\[contract\\]|#\\[contractimpl\\]|#\\[contracttype\\]|#\\[contractmeta\\])\\b"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.rust",
+          "match": "\\b\\d+(\\.\\d+)?\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.rust",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*(?=\\s*\\()"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.rust",
+          "match": "\\b(i8|i16|i32|i64|i128|u8|u16|u32|u64|u128|f32|f64|bool|char|str|String|Vec|Option|Result|Box|Rc|Arc)\\b"
+        },
+        {
+          "name": "storage.type.stellar",
+          "match": "\\b(Address|Symbol|Bytes|Map|Vec|Env|Contract|ContractClient|IntoVal|FromVal|TryFromVal|TryIntoVal)\\b"
+        }
+      ]
+    }
+  }
+}
