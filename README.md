@@ -65,6 +65,21 @@ Configure the Stellar CLI integration through VS Code settings:
 - `stellar.network.rpc`: RPC URL for Stellar network
 - `stellar.network.passphrase`: Network passphrase for Stellar network
 
+## Getting Started
+
+### Quick Start
+New to the extension? Check out our [5-minute Quick Start Guide](QUICKSTART.md) to get up and running immediately.
+
+### Complete Usage Guide
+For comprehensive documentation, see the [complete Usage Guide](USAGE_GUIDE.md) which covers:
+- Step-by-step installation
+- Feature walkthrough with examples
+- Advanced usage patterns
+- Troubleshooting tips
+
+### Live Demo
+Want to see the extension in action? Check out the [Demo Guide](DEMO.md) with real-world examples and screenshots.
+
 ## Development
 
 To set up the development environment:
