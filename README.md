@@ -19,6 +19,10 @@ This extension provides comprehensive language support for Stellar smart contrac
 - Completion for Stellar types (`Env`, `Address`, `Symbol`, `Bytes`, `Map`, `Vec`)
 - Validation for proper contract structure and implementation
 - Hover documentation for Stellar environment and host functions
+<img width="658" height="269" alt="image" src="https://github.com/user-attachments/assets/d960f48a-1679-410e-9de5-f96423c821d1" />
+<img width="1122" height="516" alt="image" src="https://github.com/user-attachments/assets/1ecf673b-9889-4d61-8fdd-d40927228f30" />
+<img width="1760" height="768" alt="image" src="https://github.com/user-attachments/assets/f6e4328e-4a2f-4454-97fa-2629b2cbcbd6" />
+<img width="1082" height="816" alt="image" src="https://github.com/user-attachments/assets/cc246f4e-43b5-41aa-97ed-6b2dfd9a9b72" />
 
 ## Requirements
 
