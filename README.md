@@ -33,7 +33,6 @@ This extension contributes the following settings:
 - `stellar.lsp.trace.server`: Control LSP server communication tracing (`off`, `messages`, `verbose`)
 - `stellar.diagnostics.enable`: Enable/disable diagnostic reporting (default: `true`)
 - `stellar.cli.path`: Path to the Stellar CLI executable (default: `stellar`)
-- `stellar.build.target`: Build target for contracts (default: `wasm32-unknown-unknown`)
 - `stellar.network.rpc`: RPC URL for Stellar network
 - `stellar.network.passphrase`: Network passphrase for Stellar network
 
@@ -45,6 +44,77 @@ This extension contributes the following settings:
 - `Stellar: Deploy Stellar Contract`: Deploy the contract to the Stellar network
 - `Stellar: Invoke Stellar Contract Function`: Invoke a function on a deployed contract
 - `Stellar: Generate TypeScript Types`: Generate TypeScript bindings for the contract
+
+### TypeScript Bindings Generation
+
+The extension includes a powerful feature to automatically generate TypeScript bindings for your contracts:
+
+1. **Build your contract first**: Use `Stellar: Build Stellar Contract`
+2. **Open Command Palette**: `Ctrl+Shift+P` (or `Cmd+Shift+P`)
+3. **Run**: `Stellar: Generate TypeScript Types`
+4. **Result**: TypeScript bindings created in `bindings/` directory
+
+Example generated interface:
+
+```typescript
+export interface Client {
+  initialize: ({admin, name, symbol}: {
+    admin: string,
+    name: string,
+    symbol: string
+  }) => Promise<AssembledTransaction<void>>
+  
+  mint: ({to, metadata}: {
+    to: string,
+    metadata: Buffer
+  }) => Promise<AssembledTransaction<bigint>>
+}
+```
+
+## Debugging Support
+
+The extension provides comprehensive debugging capabilities for Stellar contracts using Code LLDB:
+
+### Prerequisites
+- **Code LLDB Extension**: Automatically installed as a dependency
+- **Rust Analyzer**: Automatically installed as a dependency for enhanced code completion
+
+### Debugging Features
+1. **Launch Debugging**: Start a new debug session for your contract
+2. **Attach Debugging**: Attach to an already running contract process
+3. **Break on Panic**: Automatically break when contracts panic during execution
+4. **Integrated Terminal**: Debug output appears in VS Code's integrated terminal
+
+### How to Debug
+1. **Build your contract first**: Use `Stellar: Build Stellar Contract`
+2. **Start debugging**: Use `Stellar: Debug Stellar Contract` or press `F5`
+3. **Set breakpoints**: Click in the gutter next to line numbers
+4. **Use debug console**: Inspect variables and execute expressions
+
+### Debug Configurations
+The extension provides several debug configurations:
+- **Debug Stellar Contract**: Debug with debug build
+- **Debug Stellar Contract (Release)**: Debug with release build
+- **Attach to Stellar Contract**: Attach to running process
+
+## Rust Analyzer Integration
+
+Enhanced code completion and analysis through Rust Analyzer integration:
+
+### Features
+- **Intelligent Code Completion**: Context-aware suggestions for Rust syntax
+- **Error Detection**: Real-time error highlighting and diagnostics
+- **Go to Definition**: Navigate to function and type definitions
+- **Find References**: Locate all usages of functions and types
+- **Code Actions**: Automatic fixes and refactoring suggestions
+
+### Configuration
+Enable/disable Rust Analyzer integration in VS Code settings:
+```json
+{
+  "stellar.rustAnalyzer.enable": true
+}
+```
 
 ## Stellar CLI Integration
 
@@ -61,7 +131,6 @@ This extension integrates with the Stellar CLI to provide seamless development e
 Configure the Stellar CLI integration through VS Code settings:
 
 - `stellar.cli.path`: Path to the Stellar CLI executable (default: `stellar`)
-- `stellar.build.target`: Build target for contracts (default: `wasm32-unknown-unknown`)
 - `stellar.network.rpc`: RPC URL for Stellar network
 - `stellar.network.passphrase`: Network passphrase for Stellar network
 

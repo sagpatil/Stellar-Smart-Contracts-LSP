@@ -17,7 +17,10 @@ import {
   DefinitionParams,
   Location,
   Range,
-  Position
+  Position,
+  DocumentSymbolParams,
+  DocumentSymbol,
+  SymbolKind
 } from 'vscode-languageserver/node';
 
 import {
@@ -1274,6 +1277,127 @@ impl AccessControl for MyContract {}
 
   return stellarDocs[word] || null;
 }
+
+// Document symbols provider
+connection.onDocumentSymbol((params: DocumentSymbolParams): DocumentSymbol[] => {
+  const document = documents.get(params.textDocument.uri);
+  if (!document) {
+    return [];
+  }
+
+  const text = document.getText();
+  const symbols: DocumentSymbol[] = [];
+
+  // Parse Rust/Stellar contract symbols
+  const lines = text.split('\n');
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmedLine = line.trim();
+    
+    // Contract structs
+    if (trimmedLine.includes('#[contract]')) {
+      const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
+      const structMatch = nextLine.match(/pub\s+struct\s+(\w+)/);
+      if (structMatch) {
+        symbols.push({
+          name: structMatch[1],
+          kind: SymbolKind.Class,
+          range: Range.create(i, 0, i + 1, nextLine.length),
+          selectionRange: Range.create(i + 1, nextLine.indexOf(structMatch[1]), i + 1, nextLine.indexOf(structMatch[1]) + structMatch[1].length),
+          detail: 'Stellar Contract'
+        });
+      }
+    }
+    
+    // Contract implementations
+    if (trimmedLine.includes('#[contractimpl]')) {
+      const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
+      const implMatch = nextLine.match(/impl\s+(\w+)/);
+      if (implMatch) {
+        // Find the end of the impl block
+        let endLine = i + 1;
+        let braceCount = 0;
+        for (let j = i + 1; j < lines.length; j++) {
+          const currentLine = lines[j];
+          braceCount += (currentLine.match(/\{/g) || []).length;
+          braceCount -= (currentLine.match(/\}/g) || []).length;
+          if (braceCount === 0 && currentLine.includes('}')) {
+            endLine = j;
+            break;
+          }
+        }
+        
+        // Find functions within the impl block
+        const functions: DocumentSymbol[] = [];
+        for (let j = i + 2; j < endLine; j++) {
+          const funcLine = lines[j].trim();
+          const funcMatch = funcLine.match(/pub\s+fn\s+(\w+)/);
+          if (funcMatch) {
+            functions.push({
+              name: funcMatch[1],
+              kind: SymbolKind.Function,
+              range: Range.create(j, 0, j, lines[j].length),
+              selectionRange: Range.create(j, lines[j].indexOf(funcMatch[1]), j, lines[j].indexOf(funcMatch[1]) + funcMatch[1].length),
+              detail: 'Contract Function'
+            });
+          }
+        }
+        
+        symbols.push({
+          name: `${implMatch[1]} Implementation`,
+          kind: SymbolKind.Interface,
+          range: Range.create(i, 0, endLine, lines[endLine].length),
+          selectionRange: Range.create(i + 1, nextLine.indexOf(implMatch[1]), i + 1, nextLine.indexOf(implMatch[1]) + implMatch[1].length),
+          detail: 'Contract Implementation',
+          children: functions
+        });
+      }
+    }
+    
+    // Enums and structs
+    const enumMatch = trimmedLine.match(/pub\s+enum\s+(\w+)/);
+    if (enumMatch) {
+      symbols.push({
+        name: enumMatch[1],
+        kind: SymbolKind.Enum,
+        range: Range.create(i, 0, i, line.length),
+        selectionRange: Range.create(i, line.indexOf(enumMatch[1]), i, line.indexOf(enumMatch[1]) + enumMatch[1].length),
+        detail: 'Enum'
+      });
+    }
+    
+    const structMatch = trimmedLine.match(/pub\s+struct\s+(\w+)/);
+    if (structMatch && !lines[i - 1]?.includes('#[contract]')) {
+      symbols.push({
+        name: structMatch[1],
+        kind: SymbolKind.Struct,
+        range: Range.create(i, 0, i, line.length),
+        selectionRange: Range.create(i, line.indexOf(structMatch[1]), i, line.indexOf(structMatch[1]) + structMatch[1].length),
+        detail: 'Struct'
+      });
+    }
+
+    // Contract types
+    if (trimmedLine.includes('#[contracttype]')) {
+      const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
+      if (nextLine.includes('pub enum') || nextLine.includes('pub struct')) {
+        const typeMatch = nextLine.match(/pub\s+(?:enum|struct)\s+(\w+)/);
+        if (typeMatch) {
+          symbols.push({
+            name: typeMatch[1],
+            kind: SymbolKind.TypeParameter,
+            range: Range.create(i, 0, i + 1, nextLine.length),
+            selectionRange: Range.create(i + 1, nextLine.indexOf(typeMatch[1]), i + 1, nextLine.indexOf(typeMatch[1]) + typeMatch[1].length),
+            detail: 'Contract Type'
+          });
+        }
+      }
+    }
+  }
+
+  return symbols;
+});
 
 connection.onDidChangeWatchedFiles(_change => {
   connection.console.log('Watched files have changed');

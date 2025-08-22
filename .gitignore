@@ -5,5 +5,6 @@ node_modules
 *.vsix
 
 # Rust/Cargo build artifacts
+target/
 test-contracts/target/
 test-contracts/Cargo.lock

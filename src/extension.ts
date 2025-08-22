@@ -67,13 +67,20 @@ export function activate(context: vscode.ExtensionContext) {
   const buildCommand = vscode.commands.registerCommand(
     'stellar-contracts-lsp.build',
     async () => {
-      const config = vscode.workspace.getConfiguration('stellar');
-      const cliPath = config.get('cli.path', 'stellar');
-      const target = config.get('build.target', 'wasm32-unknown-unknown');
-      
-      const terminal = vscode.window.createTerminal('Stellar Build');
-      terminal.show();
-      terminal.sendText(`${cliPath} contract build --target ${target}`);
+      try {
+        const config = vscode.workspace.getConfiguration('stellar');
+        const cliPath = config.get('cli.path', 'stellar');
+        
+        vscode.window.showInformationMessage('Starting Stellar contract build...');
+        
+        const terminal = vscode.window.createTerminal('Stellar Build');
+        terminal.show();
+        terminal.sendText(`${cliPath} contract build`);
+        
+        vscode.window.showInformationMessage('Build command sent to terminal');
+      } catch (error) {
+        vscode.window.showErrorMessage(`Build error: ${error}`);
+      }
     }
   );
 
@@ -81,12 +88,9 @@ export function activate(context: vscode.ExtensionContext) {
   const testCommand = vscode.commands.registerCommand(
     'stellar-contracts-lsp.test',
     async () => {
-      const config = vscode.workspace.getConfiguration('stellar');
-      const cliPath = config.get('cli.path', 'stellar');
-      
       const terminal = vscode.window.createTerminal('Stellar Test');
       terminal.show();
-      terminal.sendText(`${cliPath} contract test`);
+      terminal.sendText('cargo test');
     }
   );
 
@@ -99,7 +103,7 @@ export function activate(context: vscode.ExtensionContext) {
       const rpcUrl = config.get('network.rpc', 'https://soroban-testnet.stellar.org');
       const passphrase = config.get('network.passphrase', 'Test SDF Network ; September 2015');
       
-      const wasmFiles = await vscode.workspace.findFiles('**/*.wasm');
+      const wasmFiles = await vscode.workspace.findFiles('**/target/**/*.wasm', '**/node_modules/**');
       if (wasmFiles.length === 0) {
         vscode.window.showErrorMessage('No WASM files found. Please build the contract first.');
         return;
@@ -108,7 +112,7 @@ export function activate(context: vscode.ExtensionContext) {
       const selectedFile = wasmFiles[0]; // Use first WASM file found
       const terminal = vscode.window.createTerminal('Stellar Deploy');
       terminal.show();
-      terminal.sendText(`${cliPath} contract deploy --wasm ${selectedFile.fsPath} --rpc-url ${rpcUrl} --network-passphrase "${passphrase}"`);
+      terminal.sendText(`${cliPath} contract deploy --wasm "${selectedFile.fsPath}" --rpc-url ${rpcUrl} --network-passphrase "${passphrase}"`);
     }
   );
 
@@ -152,16 +156,100 @@ export function activate(context: vscode.ExtensionContext) {
       const config = vscode.workspace.getConfiguration('stellar');
       const cliPath = config.get('cli.path', 'stellar');
       
-      const wasmFiles = await vscode.workspace.findFiles('**/*.wasm');
+      // Find WASM files in target directory (exclude VS Code internal files)
+      const wasmFiles = await vscode.workspace.findFiles('**/target/**/*.wasm', '**/node_modules/**');
       if (wasmFiles.length === 0) {
-        vscode.window.showErrorMessage('No WASM files found. Please build the contract first.');
+        vscode.window.showErrorMessage('No WASM files found in target directory. Please build the contract first using "Stellar: Build Stellar Contract".');
         return;
       }
       
-      const selectedFile = wasmFiles[0]; // Use first WASM file found
+      // Let user select WASM file if multiple found
+      let selectedFile = wasmFiles[0];
+      if (wasmFiles.length > 1) {
+        const selectedItem = await vscode.window.showQuickPick(
+          wasmFiles.map(file => ({
+            label: path.basename(file.fsPath),
+            description: file.fsPath,
+            file: file
+          })),
+          { placeHolder: 'Select WASM file to generate TypeScript bindings for' }
+        );
+        if (!selectedItem) {
+          return;
+        }
+        selectedFile = selectedItem.file;
+      }
+      
+      // Get output directory
+      const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+      if (!workspaceFolder) {
+        vscode.window.showErrorMessage('No workspace folder found');
+        return;
+      }
+      
+      const outputDir = path.join(workspaceFolder.uri.fsPath, 'bindings');
+      
       const terminal = vscode.window.createTerminal('Stellar Generate Types');
       terminal.show();
-      terminal.sendText(`${cliPath} contract bindings typescript --wasm ${selectedFile.fsPath}`);
+      
+      // Use quoted paths to handle spaces properly
+      const wasmPath = `"${selectedFile.fsPath}"`;
+      const outputPath = `"${outputDir}"`;
+      
+      terminal.sendText(`${cliPath} contract bindings typescript --wasm ${wasmPath} --output-dir ${outputPath} --overwrite`);
+      
+      vscode.window.showInformationMessage(`Generating TypeScript bindings from ${path.basename(selectedFile.fsPath)}...`);
+    }
+  );
+
+  // Register debug command
+  const debugCommand = vscode.commands.registerCommand(
+    'stellar-contracts-lsp.debug',
+    async () => {
+      try {
+        const config = vscode.workspace.getConfiguration('stellar');
+        const debugEnabled = config.get('debug.enable', true);
+        
+        if (!debugEnabled) {
+          vscode.window.showErrorMessage('Debugging is disabled. Enable it in settings.');
+          return;
+        }
+
+        // Check if contract is built
+        const wasmFiles = await vscode.workspace.findFiles('**/target/**/*.wasm', '**/node_modules/**');
+        if (wasmFiles.length === 0) {
+          const buildFirst = await vscode.window.showWarningMessage(
+            'No WASM files found. Build the contract first?',
+            'Build Now',
+            'Cancel'
+          );
+          
+          if (buildFirst === 'Build Now') {
+            vscode.commands.executeCommand('stellar-contracts-lsp.build');
+            return;
+          }
+          return;
+        }
+
+        // Start debugging session
+        const debugConfig = {
+          type: 'lldb',
+          request: 'launch',
+          name: 'Debug Stellar Contract',
+          program: '${workspaceFolder}/target/debug/${workspaceFolderBasename}',
+          args: [],
+          cwd: '${workspaceFolder}',
+          env: {},
+          stopOnEntry: false,
+          console: 'integratedTerminal'
+        };
+
+        await vscode.debug.startDebugging(undefined, debugConfig);
+        vscode.window.showInformationMessage('Starting debug session for Stellar contract...');
+        
+      } catch (error) {
+        vscode.window.showErrorMessage(`Debug error: ${error}`);
+      }
     }
   );
 
@@ -171,7 +259,8 @@ export function activate(context: vscode.ExtensionContext) {
     testCommand,
     deployCommand,
     invokeCommand,
-    generateTypesCommand
+    generateTypesCommand,
+    debugCommand
   );
 
   // Start the client (this will also launch the server)

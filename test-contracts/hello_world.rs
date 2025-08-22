@@ -5,7 +5,7 @@ pub struct HelloContract;
 
 #[contractimpl]
 impl HelloContract {
-    pub fn hello(env: Env, to: Symbol) -> Symbol {
+    pub fn hello2(env: Env, to: Symbol) -> Symbol {
         symbol_short!("Hello")
     }
 }
