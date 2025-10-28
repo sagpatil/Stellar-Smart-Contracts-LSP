@@ -16,3 +16,14 @@ test-contracts/target/**
 **/target/**
 **/*.lock
 **/.DS_Store
+server/node_modules/**
+server/src/**
+server/package-lock.json
+server/tsconfig.json
+create_ts_bindings_demo.sh
+COMMAND_PALETTE_TESTING.md
+DEMO.md
+EXTENSION_USAGE_EXAMPLE.md
+TESTING_GUIDE.md
+USAGE_GUIDE.md
+.github/**

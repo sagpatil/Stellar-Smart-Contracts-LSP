@@ -20,7 +20,9 @@ import {
   Position,
   DocumentSymbolParams,
   DocumentSymbol,
-  SymbolKind
+  SymbolKind,
+  WorkspaceSymbolParams,
+  SymbolInformation
 } from 'vscode-languageserver/node';
 
 import {
@@ -877,6 +879,116 @@ connection.onHover((params: HoverParams): Hover | null => {
   return null;
 });
 
+// Definition provider
+connection.onDefinition((params: DefinitionParams): Location[] => {
+  const document = documents.get(params.textDocument.uri);
+  if (!document) {
+    return [];
+  }
+
+  const position = params.position;
+  const text = document.getText();
+  const offset = document.offsetAt(position);
+  
+  // Get the word at the cursor position
+  const wordRange = getWordRangeAtPosition(text, offset);
+  if (!wordRange) {
+    return [];
+  }
+
+  const word = text.substring(wordRange.start, wordRange.end);
+  const lines = text.split('\n');
+  
+  // Search for definitions in the current document
+  const definitions: Location[] = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // Function definitions
+    if (line.includes(`pub fn ${word}(`) || line.includes(`fn ${word}(`)) {
+      const startChar = line.indexOf(word);
+      if (startChar !== -1) {
+        definitions.push({
+          uri: params.textDocument.uri,
+          range: Range.create(i, startChar, i, startChar + word.length)
+        });
+      }
+    }
+    
+    // Struct definitions
+    if (line.includes(`pub struct ${word}`) || line.includes(`struct ${word}`)) {
+      const startChar = line.indexOf(word);
+      if (startChar !== -1) {
+        definitions.push({
+          uri: params.textDocument.uri,
+          range: Range.create(i, startChar, i, startChar + word.length)
+        });
+      }
+    }
+    
+    // Enum definitions
+    if (line.includes(`pub enum ${word}`) || line.includes(`enum ${word}`)) {
+      const startChar = line.indexOf(word);
+      if (startChar !== -1) {
+        definitions.push({
+          uri: params.textDocument.uri,
+          range: Range.create(i, startChar, i, startChar + word.length)
+        });
+      }
+    }
+    
+    // Type alias definitions
+    if (line.includes(`type ${word}`) && line.includes('=')) {
+      const startChar = line.indexOf(word);
+      if (startChar !== -1) {
+        definitions.push({
+          uri: params.textDocument.uri,
+          range: Range.create(i, startChar, i, startChar + word.length)
+        });
+      }
+    }
+    
+    // Const/static definitions
+    if ((line.includes(`const ${word}:`) || line.includes(`static ${word}:`)) && line.includes('=')) {
+      const startChar = line.indexOf(word);
+      if (startChar !== -1) {
+        definitions.push({
+          uri: params.textDocument.uri,
+          range: Range.create(i, startChar, i, startChar + word.length)
+        });
+      }
+    }
+    
+    // Contract type definitions (Stellar specific)
+    if (line.includes('#[contracttype]')) {
+      const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
+      if (nextLine.includes(`pub enum ${word}`) || nextLine.includes(`pub struct ${word}`)) {
+        const startChar = nextLine.indexOf(word);
+        if (startChar !== -1) {
+          definitions.push({
+            uri: params.textDocument.uri,
+            range: Range.create(i + 1, startChar, i + 1, startChar + word.length)
+          });
+        }
+      }
+    }
+    
+    // Variable let bindings
+    if (line.includes(`let ${word}`) && (line.includes('=') || line.includes(':'))) {
+      const startChar = line.indexOf(word);
+      if (startChar !== -1) {
+        definitions.push({
+          uri: params.textDocument.uri,
+          range: Range.create(i, startChar, i, startChar + word.length)
+        });
+      }
+    }
+  }
+  
+  return definitions;
+});
+
 function getWordRangeAtPosition(text: string, offset: number): { start: number; end: number } | null {
   const wordRegex = /\b\w+\b/g;
   let match;
@@ -1397,6 +1509,13 @@ connection.onDocumentSymbol((params: DocumentSymbolParams): DocumentSymbol[] => 
   }
 
   return symbols;
+});
+
+// Workspace symbols provider
+connection.onWorkspaceSymbol((params: WorkspaceSymbolParams): SymbolInformation[] => {
+  // For now, return empty array since we'd need to scan all files in workspace
+  // This could be enhanced to scan all Rust files in the workspace for symbols
+  return [];
 });
 
 connection.onDidChangeWatchedFiles(_change => {
